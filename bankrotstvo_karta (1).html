@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LexDesk — Банкротство А45-15782/2023</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1a2f6e;--navy2:#1e4db7;--navy3:#38a8e0;
+  --accent:#1a56db;--accent-h:#1447c0;--accent-l:#e8f0fe;--accent-m:#bfcffe;
+  --bg:#f0f4fa;--surface:#fff;--surface2:#f7f9fc;
+  --border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
+  --teal:#0891b2;--teal-l:#e0f2fe;--teal-b:#7dd3fc;
+  --green:#16a34a;--green-l:#dcfce7;--green-b:#86efac;
+  --amber:#d97706;--amber-l:#fef3c7;--amber-b:#fcd34d;
+  --red:#dc2626;--red-l:#fee2e2;--red-b:#fca5a5;
+  --purple:#7c3aed;--purple-l:#ede9fe;--purple-b:#c4b5fd;
+  --orange:#ea580c;--orange-l:#fff7ed;
+  --sh:0 1px 3px rgba(0,0,0,0.07),0 1px 2px rgba(0,0,0,0.04);
+  --sh-md:0 4px 16px rgba(0,0,0,0.09),0 2px 4px rgba(0,0,0,0.04);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
+
+/* SIDEBAR */
+.sidebar{width:52px;min-height:100vh;background:linear-gradient(180deg,var(--navy) 0%,#162960 100%);display:flex;flex-direction:column;align-items:center;padding:14px 0 12px;gap:2px;position:fixed;top:0;left:0;bottom:0;z-index:100;}
+.sb-logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--navy3),var(--accent));display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.si{width:44px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;transition:all 0.15s;position:relative;}
+.si:hover{background:rgba(255,255,255,0.08);}
+.si.active{background:rgba(56,168,224,0.22);border:1px solid rgba(56,168,224,0.3);}
+.si svg{opacity:0.45;transition:opacity 0.15s;}
+.si:hover svg,.si.active svg{opacity:1;}
+.si-badge{position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:var(--red);}
+.sdiv{width:28px;height:1px;background:rgba(255,255,255,0.1);margin:5px 0;}
+.sav{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--navy3),var(--accent));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;margin-top:auto;}
+
+/* MAIN */
+.main{margin-left:52px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
+
+/* TOPBAR */
+.topbar{background:linear-gradient(90deg,var(--navy) 0%,var(--navy2) 55%,var(--navy3) 100%);height:52px;display:flex;align-items:center;padding:0 20px;gap:10px;position:sticky;top:0;z-index:50;}
+.tb-back{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.bc{font-size:12px;color:rgba(255,255,255,0.65);}
+.bc strong{color:#fff;font-weight:500;}
+.tbr{margin-left:auto;display:flex;gap:7px;}
+.hbtn{height:30px;padding:0 12px;border-radius:7px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.1);font-size:11px;font-weight:500;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:5px;transition:background 0.15s;white-space:nowrap;}
+.hbtn:hover{background:rgba(255,255,255,0.22);}
+.hbtn.solid{background:#fff;color:var(--accent);border-color:#fff;}
+
+/* CASE HEADER */
+.case-hd{background:var(--surface);border-bottom:1px solid var(--border);}
+.ch-alert{background:linear-gradient(90deg,#7c3aed,#6d28d9);padding:8px 20px;display:flex;align-items:center;gap:8px;}
+.ch-alert-text{font-size:12px;color:#fff;flex:1;}
+.ch-alert-text strong{font-weight:600;}
+.ch-alert-close{background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:11px;cursor:pointer;padding:3px 9px;border-radius:5px;font-family:'Inter',sans-serif;}
+.ch-main{padding:14px 20px 10px;}
+.ch-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.ch-icon{width:42px;height:42px;border-radius:10px;background:var(--amber-l);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--amber-b);}
+.ch-title{font-family:'Sora',sans-serif;font-size:16px;font-weight:600;color:var(--text);flex:1;line-height:1.3;}
+.ch-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;}
+.badge{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;}
+.b-bnk{background:var(--amber-l);color:var(--amber);}
+.b-kp{background:var(--red-l);color:var(--red);}
+.b-our{background:var(--green-l);color:var(--green);}
+.b-active{background:var(--teal-l);color:var(--teal);}
+.ch-meta{display:flex;gap:0;flex-wrap:wrap;padding-bottom:4px;}
+.mi{padding:0 14px 0 0;margin-right:14px;border-right:1px solid var(--border);}
+.mi:last-child{border-right:none;}
+.ml{font-size:10px;color:var(--text3);margin-bottom:2px;}
+.mv{font-size:12px;color:var(--text);font-weight:500;}
+.mv.ac{color:var(--accent);}
+.mv.rd{color:var(--red);font-weight:600;}
+.mv.gr{color:var(--green);}
+.mv.am{color:var(--amber);}
+.mv.pu{color:var(--purple);}
+
+/* PROCEDURE STAGES */
+.stages{padding:10px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:0;overflow-x:auto;}
+.stage{display:flex;align-items:center;gap:0;flex-shrink:0;}
+.stage-node{display:flex;flex-direction:column;align-items:center;gap:3px;padding:0 8px;}
+.stage-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.sd-done{background:var(--green-l);color:var(--green);border:1.5px solid var(--green-b);}
+.sd-active{background:var(--red);color:#fff;box-shadow:0 0 0 4px rgba(220,38,38,0.15);}
+.sd-future{background:var(--surface2);color:var(--text3);border:1.5px dashed var(--border2);}
+.stage-label{font-size:10px;color:var(--text2);font-weight:500;white-space:nowrap;}
+.stage-date{font-size:9px;color:var(--text3);}
+.stage-line{width:32px;height:1.5px;flex-shrink:0;}
+.sl-done{background:var(--green-b);}
+.sl-active{background:linear-gradient(90deg,var(--green-b),var(--red));}
+.sl-future{background:var(--border2);}
+
+/* TIMER */
+.timer-bar{background:linear-gradient(90deg,var(--navy),var(--navy2));padding:8px 20px;display:flex;align-items:center;gap:12px;}
+.tp{width:7px;height:7px;border-radius:50%;background:#5eead4;animation:glow 1.6s ease-in-out infinite;flex-shrink:0;}
+@keyframes glow{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(94,234,212,0.5);}50%{opacity:0.4;box-shadow:0 0 0 4px rgba(94,234,212,0);}}
+.tl{font-size:11px;color:rgba(255,255,255,0.7);flex:1;}
+.tl strong{color:#fff;}
+.tc{font-family:'Sora',sans-serif;font-size:18px;font-weight:600;color:#5eead4;letter-spacing:1px;}
+.tbtn{height:25px;padding:0 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.08);font-size:10px;color:rgba(255,255,255,0.75);cursor:pointer;font-family:'Inter',sans-serif;margin-left:5px;}
+.tbtn.stop{background:rgba(220,38,38,0.2);border-color:rgba(220,38,38,0.35);color:#fca5a5;}
+
+/* TABS */
+.tabs-row{background:var(--surface);border-bottom:1px solid var(--border);display:flex;padding:0 20px;overflow-x:auto;}
+.tab{height:40px;padding:0 13px;font-size:12px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:5px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color 0.15s;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500;}
+.tab-n{font-size:10px;font-weight:600;background:var(--accent-l);color:var(--accent);padding:1px 6px;border-radius:8px;}
+.tab-n.red{background:var(--red-l);color:var(--red);}
+.tab-n.amber{background:var(--amber-l);color:var(--amber);}
+.tab-n.purple{background:var(--purple-l);color:var(--purple);}
+
+/* CONTENT */
+.content{flex:1;padding:16px 20px;display:grid;grid-template-columns:1fr 310px;gap:16px;align-items:start;}
+
+/* PANEL */
+.panel{background:var(--surface);border-radius:12px;border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;margin-bottom:14px;}
+.panel:last-child{margin-bottom:0;}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);}
+.ph-t{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px;}
+.ph-a{font-size:11px;font-weight:500;color:var(--accent);cursor:pointer;}
+.panel-body{padding:14px 16px;}
+
+/* INFO GRID */
+.ig{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;}
+.ig-l{font-size:10px;color:var(--text3);margin-bottom:2px;}
+.ig-v{font-size:13px;font-weight:500;color:var(--text);}
+.ig-v.ac{color:var(--accent);}
+.ig-v.rd{color:var(--red);}
+.ig-v.gr{color:var(--green);}
+.ig-v.am{color:var(--amber);}
+.ig-v.pu{color:var(--purple);}
+.ig-v.big{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.span2{grid-column:span 2;}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--sh);padding:12px 14px;}
+.kpi-l{font-size:11px;color:var(--text3);margin-bottom:5px;}
+.kpi-v{font-family:'Sora',sans-serif;font-size:18px;font-weight:600;color:var(--text);line-height:1;}
+.kpi-s{font-size:11px;color:var(--text3);margin-top:3px;}
+.kpi.k-red{background:var(--red-l);border-color:var(--red-b);}
+.kpi.k-red .kpi-v{color:var(--red);}
+.kpi.k-amber{background:var(--amber-l);border-color:var(--amber-b);}
+.kpi.k-amber .kpi-v{color:var(--amber);}
+.kpi.k-green{background:var(--green-l);border-color:var(--green-b);}
+.kpi.k-green .kpi-v{color:var(--green);}
+.kpi.k-blue{background:var(--accent-l);border-color:var(--accent-m);}
+.kpi.k-blue .kpi-v{color:var(--accent);}
+
+/* CREDITORS TABLE */
+.cr-table{width:100%;border-collapse:collapse;font-size:12px;}
+.cr-table th{text-align:left;padding:8px 12px;font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;background:var(--surface2);border-bottom:1px solid var(--border);}
+.cr-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.cr-table tr:last-child td{border-bottom:none;}
+.cr-table tr:hover td{background:#fafbff;}
+.cr-table tr.our-row td{background:var(--green-l);}
+.cr-table tr.our-row:hover td{background:#d1fae5;}
+.cr-name{font-weight:500;color:var(--text);}
+.cr-num{font-size:10px;color:var(--text3);margin-top:1px;}
+.cr-amt{font-weight:600;color:var(--text);font-family:'Sora',sans-serif;font-size:13px;}
+.cr-pct{font-size:10px;color:var(--text3);}
+.q-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;white-space:nowrap;}
+.q1{background:#fce7f3;color:#9d174d;}
+.q2{background:#ede9fe;color:#6d28d9;}
+.q3{background:var(--accent-l);color:var(--accent);}
+.st-badge{font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;}
+.st-in{background:var(--green-l);color:var(--green);}
+.st-pend{background:var(--amber-l);color:var(--amber);}
+.st-rej{background:var(--red-l);color:var(--red);}
+.st-disp{background:var(--purple-l);color:var(--purple);}
+.our-label{font-size:9px;font-weight:700;background:var(--green);color:#fff;padding:1px 5px;border-radius:3px;margin-left:5px;}
+
+/* PROCEEDINGS TABLE */
+.pr-list{display:flex;flex-direction:column;}
+.pr-item{padding:11px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s;display:flex;gap:12px;align-items:flex-start;}
+.pr-item:last-child{border-bottom:none;}
+.pr-item:hover{background:#fafbff;}
+.pr-type{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+.pt-ospor{background:var(--red-l);color:var(--red);}
+.pt-incl{background:var(--accent-l);color:var(--accent);}
+.pt-sub{background:var(--purple-l);color:var(--purple);}
+.pt-razn{background:var(--amber-l);color:var(--amber);}
+.pr-body{flex:1;}
+.pr-title{font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px;}
+.pr-meta{font-size:11px;color:var(--text3);display:flex;gap:8px;flex-wrap:wrap;}
+.pr-status{margin-left:auto;text-align:right;flex-shrink:0;}
+
+/* ASSETS TABLE */
+.asset-item{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.asset-item:last-child{border-bottom:none;}
+.asset-icon{width:30px;height:30px;border-radius:7px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);}
+.asset-name{font-size:12px;font-weight:500;color:var(--text);flex:1;}
+.asset-sub{font-size:11px;color:var(--text3);margin-top:1px;}
+.asset-val{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--text);text-align:right;}
+.asset-status{font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;margin-top:2px;white-space:nowrap;}
+.as-avail{background:var(--green-l);color:var(--green);}
+.as-sold{background:var(--teal-l);color:var(--teal);}
+.as-auction{background:var(--amber-l);color:var(--amber);}
+.as-dispute{background:var(--purple-l);color:var(--purple);}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:2px;}
+
+/* TIMELINE */
+.tl-item{display:flex;gap:12px;padding:10px 16px;position:relative;}
+.tl-item:not(:last-child)::after{content:'';position:absolute;left:27px;top:38px;bottom:0;width:1px;background:var(--border);}
+.tl-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid;}
+.td-blue{background:var(--accent-l);border-color:var(--accent-m);}
+.td-green{background:var(--green-l);border-color:var(--green-b);}
+.td-amber{background:var(--amber-l);border-color:var(--amber-b);}
+.td-red{background:var(--red-l);border-color:var(--red-b);}
+.td-purple{background:var(--purple-l);border-color:var(--purple-b);}
+.tl-body{flex:1;padding-top:1px;}
+.tl-t{font-size:12px;font-weight:500;color:var(--text);}
+.tl-s{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.5;}
+.tl-d{font-size:10px;color:var(--text3);margin-top:3px;}
+
+/* RIGHT COLUMN */
+.right-col{display:flex;flex-direction:column;gap:14px;position:sticky;top:52px;}
+
+/* AI PANEL */
+.ai-panel{background:var(--surface);border-radius:12px;border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;}
+.ai-hd{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:11px 14px;display:flex;align-items:center;gap:8px;}
+.ai-av{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;}
+.ai-ht{font-size:12px;font-weight:600;color:#fff;}
+.ai-hs{font-size:10px;color:rgba(255,255,255,0.5);}
+.ai-live{width:6px;height:6px;border-radius:50%;background:#5eead4;margin-left:auto;animation:glow 1.5s ease-in-out infinite;}
+.ai-note{padding:10px 14px;background:var(--accent-l);border-bottom:1px solid var(--accent-m);font-size:11px;color:var(--text);line-height:1.6;}
+.ai-note strong{color:var(--accent);font-weight:600;}
+.ai-chips{padding:8px 14px;display:flex;flex-direction:column;gap:5px;}
+.ai-chip{padding:8px 11px;border-radius:7px;border:1px solid var(--border);font-size:11px;font-weight:500;color:var(--text2);cursor:pointer;text-align:left;background:var(--surface2);font-family:'Inter',sans-serif;line-height:1.4;transition:all 0.15s;display:flex;align-items:center;gap:7px;}
+.ai-chip:hover{background:var(--accent-l);border-color:var(--accent-m);color:var(--accent);}
+.ai-resp{padding:10px 14px;border-top:1px solid var(--border);display:none;}
+.ai-resp.show{display:block;}
+.ai-resp-text{font-size:11px;color:var(--text);line-height:1.65;background:var(--accent-l);border-radius:7px;padding:9px 11px;}
+
+/* UPCOMING */
+.ev-item{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);align-items:flex-start;}
+.ev-item:last-child{border-bottom:none;}
+.ev-cal{width:34px;height:36px;border-radius:7px;background:var(--surface2);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);}
+.ev-cal.hot{background:var(--red-l);border-color:var(--red-b);}
+.ev-cal.near{background:var(--amber-l);border-color:var(--amber-b);}
+.ev-cal.purple{background:var(--purple-l);border-color:var(--purple-b);}
+.ev-day{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:var(--text);line-height:1;}
+.ev-cal.hot .ev-day{color:var(--red);}
+.ev-cal.near .ev-day{color:var(--amber);}
+.ev-cal.purple .ev-day{color:var(--purple);}
+.ev-mon{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.3px;}
+.ev-body{flex:1;}
+.ev-t{font-size:12px;font-weight:500;color:var(--text);}
+.ev-s{font-size:11px;color:var(--text3);margin-top:1px;}
+.ev-time{font-size:11px;font-weight:500;color:var(--accent);margin-top:2px;}
+.ev-cal.hot .ev-mon{color:var(--red);}
+.ev-cal.near .ev-mon{color:var(--amber);}
+.ev-cal.purple .ev-mon{color:var(--purple);}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px;}
+
+/* HIDDEN TABS */
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sb-logo">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M12 3L4 7v5c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V7L12 3z"/></svg>
+  </div>
+  <div class="si" title="Дашборд">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+  </div>
+  <div class="si active" title="Дела">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M20 7H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1z"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+    <div class="si-badge"></div>
+  </div>
+  <div class="si" title="Клиенты">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+  </div>
+  <div class="si" title="Календарь">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+  </div>
+  <div class="sdiv"></div>
+  <div class="si" title="Тайм-трекер">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+  </div>
+  <div class="si" title="Биллинг">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+  </div>
+  <div class="sdiv"></div>
+  <div class="si" title="База знаний">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+  </div>
+  <div class="si" title="AI-ассистент">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  </div>
+  <div class="sav">АС</div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <button class="tb-back"><svg width="13" height="13" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="bc">Дела / <strong>А45-15782/2023 · Банкротство</strong></span>
+    <div class="tbr">
+      <button class="hbtn">Добавить документ</button>
+      <button class="hbtn">Собрание кредиторов</button>
+      <button class="hbtn">Обособленный спор</button>
+      <button class="hbtn solid">+ Событие</button>
+    </div>
+  </div>
+
+  <!-- CASE HEADER -->
+  <div class="case-hd">
+    <div class="ch-alert">
+      <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="ch-alert-text"><strong>Срочно:</strong> Собрание кредиторов назначено на 5 мая 2025 — повестка: утверждение порядка реализации конкурсной массы. Позиция клиента не согласована.</span>
+      <button class="ch-alert-close">Ознакомлен</button>
+    </div>
+    <div class="ch-main">
+      <div class="ch-top">
+        <div class="ch-icon">
+          <svg width="20" height="20" fill="none" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div style="flex:1">
+          <div class="ch-title">ООО «ПромТехСервис» — банкротство должника, конкурсное производство</div>
+          <div class="ch-badges">
+            <span class="badge b-bnk">Банкротство</span>
+            <span class="badge b-kp">Конкурсное производство</span>
+            <span class="badge b-our">Наш клиент — кредитор</span>
+            <span class="badge b-active">Активное</span>
+          </div>
+        </div>
+      </div>
+      <div class="ch-meta">
+        <div class="mi"><div class="ml">Номер дела</div><div class="mv">А45-15782/2023</div></div>
+        <div class="mi"><div class="ml">Наш клиент</div><div class="mv ac">АО «СибирьСтройГрупп»</div></div>
+        <div class="mi"><div class="ml">Требование клиента</div><div class="mv gr">₽8 750 000 · 3-я очередь</div></div>
+        <div class="mi"><div class="ml">Итого реестр</div><div class="mv rd">₽423 600 000</div></div>
+        <div class="mi"><div class="ml">Управляющий</div><div class="mv">Медведев К.А.</div></div>
+        <div class="mi"><div class="ml">Суд / Судья</div><div class="mv">АС НСО · Захарова И.Л.</div></div>
+        <div class="mi"><div class="ml">Следующее событие</div><div class="mv rd">5 мая · Собрание кредиторов</div></div>
+        <div class="mi"><div class="ml">Конкурсная масса</div><div class="mv am">₽87 400 000</div></div>
+      </div>
+    </div>
+    <!-- PROCEDURE STAGES -->
+    <div class="stages">
+      <div class="stage">
+        <div class="stage-node">
+          <div class="stage-dot sd-done">✓</div>
+          <div class="stage-label">Наблюдение</div>
+          <div class="stage-date">04.2023–09.2023</div>
+        </div>
+      </div>
+      <div class="stage-line sl-done"></div>
+      <div class="stage">
+        <div class="stage-node">
+          <div class="stage-dot sd-done">✓</div>
+          <div class="stage-label">Признание банкротом</div>
+          <div class="stage-date">09 сент 2023</div>
+        </div>
+      </div>
+      <div class="stage-line sl-active"></div>
+      <div class="stage">
+        <div class="stage-node">
+          <div class="stage-dot sd-active">►</div>
+          <div class="stage-label" style="color:var(--red);font-weight:600;">Конкурс. производство</div>
+          <div class="stage-date" style="color:var(--red);">С 09.2023 · идёт</div>
+        </div>
+      </div>
+      <div class="stage-line sl-future"></div>
+      <div class="stage">
+        <div class="stage-node">
+          <div class="stage-dot sd-future">4</div>
+          <div class="stage-label">Завершение</div>
+          <div class="stage-date">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer-bar">
+    <div class="tp"></div>
+    <span class="tl"><strong>Таймер активен</strong> — Подготовка позиции клиента к собранию кредиторов 5 мая</span>
+    <span class="tc" id="tclock">00:47:18</span>
+    <button class="tbtn">Пауза</button>
+    <button class="tbtn stop">Завершить</button>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-row">
+    <div class="tab active" onclick="switchTab(this,'overview')">Обзор</div>
+    <div class="tab" onclick="switchTab(this,'creditors')">Реестр кредиторов <span class="tab-n">14</span></div>
+    <div class="tab" onclick="switchTab(this,'assets')">Конкурсная масса</div>
+    <div class="tab" onclick="switchTab(this,'proceedings')">Обособленные споры <span class="tab-n red">6</span></div>
+    <div class="tab" onclick="switchTab(this,'transactions')">Оспаривание сделок <span class="tab-n amber">3</span></div>
+    <div class="tab" onclick="switchTab(this,'meetings')">Собрания <span class="tab-n purple">2</span></div>
+    <div class="tab" onclick="switchTab(this,'sub')">Субсидиарная отв-ть</div>
+    <div class="tab" onclick="switchTab(this,'docs')">Документы</div>
+  </div>
+
+  <!-- =================== OVERVIEW TAB =================== -->
+  <div id="tab-overview" class="tab-content active">
+    <div class="content">
+      <div>
+        <!-- KPI -->
+        <div class="kpi-row">
+          <div class="kpi k-red">
+            <div class="kpi-l">Итого реестр кредиторов</div>
+            <div class="kpi-v" style="font-size:15px;">₽423,6 млн</div>
+            <div class="kpi-s">14 кредиторов</div>
+          </div>
+          <div class="kpi k-green">
+            <div class="kpi-l">Требование клиента</div>
+            <div class="kpi-v" style="font-size:15px;">₽8 750 000</div>
+            <div class="kpi-s">3-я очередь · 2,1% реестра</div>
+          </div>
+          <div class="kpi k-amber">
+            <div class="kpi-l">Конкурсная масса</div>
+            <div class="kpi-v" style="font-size:15px;">₽87,4 млн</div>
+            <div class="kpi-s">~20,6% покрытие</div>
+          </div>
+          <div class="kpi k-blue">
+            <div class="kpi-l">Обособленных споров</div>
+            <div class="kpi-v">6</div>
+            <div class="kpi-s">3 оспаривания сделок</div>
+          </div>
+        </div>
+
+        <!-- DEBTOR INFO -->
+        <div class="panel">
+          <div class="ph"><span class="ph-t">
+            <svg width="14" height="14" fill="none" stroke="var(--amber)" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>
+            Сведения о должнике</span>
+            <span class="ph-a">Редактировать</span>
+          </div>
+          <div class="panel-body">
+            <div class="g2">
+              <div class="ig"><div class="ig-l">Должник</div><div class="ig-v">ООО «ПромТехСервис»</div></div>
+              <div class="ig"><div class="ig-l">ИНН / ОГРН</div><div class="ig-v">5406812340 / 1195476041822</div></div>
+              <div class="ig"><div class="ig-l">Дата возбуждения</div><div class="ig-v">15 апреля 2023</div></div>
+              <div class="ig"><div class="ig-l">Дата признания банкротом</div><div class="ig-v rd">9 сентября 2023</div></div>
+              <div class="ig"><div class="ig-l">Балансовая стоимость активов</div><div class="ig-v big am">₽210 000 000</div></div>
+              <div class="ig"><div class="ig-l">Установленная масса</div><div class="ig-v big">₽87 400 000</div></div>
+              <div class="ig span2"><div class="ig-l">Основной вид деятельности</div><div class="ig-v">Производство и монтаж промышленного оборудования (ОКВЭД 28.99)</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRUSTEE -->
+        <div class="panel">
+          <div class="ph"><span class="ph-t">
+            <svg width="14" height="14" fill="none" stroke="var(--purple)" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Арбитражный управляющий</span>
+            <span class="ph-a" style="color:var(--red);">Оспорить действия</span>
+          </div>
+          <div class="panel-body">
+            <div class="g3">
+              <div class="ig"><div class="ig-l">ФИО</div><div class="ig-v">Медведев Константин Александрович</div></div>
+              <div class="ig"><div class="ig-l">СРО</div><div class="ig-v ac">СРО «АУ Сибири» · НП</div></div>
+              <div class="ig"><div class="ig-l">Телефон</div><div class="ig-v">+7 913 441-22-10</div></div>
+              <div class="ig"><div class="ig-l">Назначен</div><div class="ig-v">09 сент 2023</div></div>
+              <div class="ig"><div class="ig-l">Страховка</div><div class="ig-v gr">₽3 000 000 · действует</div></div>
+              <div class="ig"><div class="ig-l">Жалобы на УУ</div><div class="ig-v rd">1 жалоба · в рассмотрении</div></div>
+            </div>
+            <div style="margin-top:10px;padding:9px 12px;background:var(--red-l);border-radius:8px;border-left:3px solid var(--red);">
+              <div style="font-size:11px;font-weight:600;color:var(--red);margin-bottom:3px;">⚠ Спорное поведение управляющего</div>
+              <div style="font-size:11px;color:var(--text2);line-height:1.55;">В ноябре 2024 УУ выставил на торги оборудование, ранее признанное им же «технически непригодным к реализации». Подготовлена жалоба в АС НСО.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TIMELINE -->
+        <div class="panel">
+          <div class="ph"><span class="ph-t">
+            <svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+            Хронология дела</span>
+            <span class="ph-a">+ Добавить</span>
+          </div>
+          <div>
+            <div class="tl-item">
+              <div class="tl-dot td-amber"><svg width="10" height="10" fill="none" stroke="#d97706" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/></svg></div>
+              <div class="tl-body">
+                <div class="tl-t">Собрание кредиторов — утверждение порядка продажи имущества</div>
+                <div class="tl-s">Повестка: реализация производственного оборудования (лоты 1–7). Позиция АО «СибирьСтройГрупп» не согласована — необходима подготовка.</div>
+                <div class="tl-d">5 мая 2025 · Предстоит</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot td-red"><svg width="10" height="10" fill="none" stroke="#dc2626" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+              <div class="tl-body">
+                <div class="tl-t">Подана жалоба на действия арбитражного управляющего</div>
+                <div class="tl-s">Жалоба на противоречивое поведение УУ Медведева К.А. в отношении реализации оборудования цеха № 3. В рассмотрении АС НСО.</div>
+                <div class="tl-d">18 апреля 2025 · Алексей Северов</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot td-purple"><svg width="10" height="10" fill="none" stroke="#7c3aed" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg></div>
+              <div class="tl-body">
+                <div class="tl-t">Первое собрание кредиторов</div>
+                <div class="tl-s">Утверждён порядок работы комитета кредиторов. АО «СибирьСтройГрупп» получило право голоса (2,1% от общего реестра).</div>
+                <div class="tl-d">28 ноября 2023</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot td-green"><svg width="10" height="10" fill="none" stroke="#16a34a" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="tl-body">
+                <div class="tl-t">Включение в реестр кредиторов — ₽8 750 000</div>
+                <div class="tl-s">Требование АО «СибирьСтройГрупп» включено в реестр в состав 3-й очереди. Основание — договор поставки № 211/2022.</div>
+                <div class="tl-d">15 ноября 2023 · Определение АС НСО</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot td-blue"><svg width="10" height="10" fill="none" stroke="#1a56db" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>
+              <div class="tl-body">
+                <div class="tl-t">Подано заявление о включении в реестр</div>
+                <div class="tl-s">Заявление с приложением договора поставки, накладных и акта сверки. Сумма требования: ₽8 750 000 (основной долг + проценты).</div>
+                <div class="tl-d">12 октября 2023</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="right-col">
+
+        <!-- CREDITORS MINI -->
+        <div class="panel">
+          <div class="ph"><span class="ph-t">Топ кредиторов</span><span class="ph-a" onclick="switchTab(document.querySelector('[onclick*=creditors]'),'creditors')">Весь реестр →</span></div>
+          <table class="cr-table">
+            <thead><tr><th>Кредитор</th><th>Сумма</th><th>Оч.</th></tr></thead>
+            <tbody>
+              <tr><td><div class="cr-name">ПАО «СибирьБанк»</div><div class="cr-num">залоговый кредитор</div></td><td><div class="cr-amt">₽180,2 млн</div></td><td><span class="q-badge q1">1-я</span></td></tr>
+              <tr><td><div class="cr-name">ФНС России</div><div class="cr-num">налоги и взносы</div></td><td><div class="cr-amt">₽42,1 млн</div></td><td><span class="q-badge q2">2-я</span></td></tr>
+              <tr><td><div class="cr-name">ООО «ТехноПоставка»</div></td><td><div class="cr-amt">₽38,4 млн</div></td><td><span class="q-badge q3">3-я</span></td></tr>
+              <tr class="our-row"><td><div class="cr-name">АО «СибирьСтройГрупп»<span class="our-label">МЫ</span></div><div class="cr-num">дог. поставки № 211/2022</div></td><td><div class="cr-amt">₽8,75 млн</div></td><td><span class="q-badge q3">3-я</span></td></tr>
+              <tr><td><div class="cr-name">ИП Орлов В.Н.</div></td><td><div class="cr-amt">₽4,2 млн</div></td><td><span class="q-badge q3">3-я</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ASSETS MINI -->
+        <div class="panel">
+          <div class="ph"><span class="ph-t">Конкурсная масса</span><span class="ph-a">Подробнее →</span></div>
+          <div class="asset-item">
+            <div class="asset-icon"><svg width="14" height="14" fill="none" stroke="var(--amber)" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+            <div style="flex:1"><div class="asset-name">Производственное оборудование</div><div class="asset-sub">Цех № 1–3, 47 единиц</div></div>
+            <div style="text-align:right"><div class="asset-val">₽54,2 млн</div><div class="asset-status as-auction">На торгах</div></div>
+          </div>
+          <div class="asset-item">
+            <div class="asset-icon"><svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+            <div style="flex:1"><div class="asset-name">Нежилое помещение</div><div class="asset-sub">г. Новосибирск, ул. Сибирская 14, 1820 м²</div></div>
+            <div style="text-align:right"><div class="asset-val">₽28,7 млн</div><div class="asset-status as-dispute">Оспаривается</div></div>
+          </div>
+          <div class="asset-item">
+            <div class="asset-icon"><svg width="14" height="14" fill="none" stroke="var(--green)" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div style="flex:1"><div class="asset-name">Дебиторская задолженность</div><div class="asset-sub">3 контрагента</div></div>
+            <div style="text-align:right"><div class="asset-val">₽4,5 млн</div><div class="asset-status as-avail">Взыскивается</div></div>
+          </div>
+          <div style="padding:10px 16px;border-top:1px solid var(--border);">
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;"><span style="color:var(--text2);">Покрытие реестра</span><span style="font-weight:600;color:var(--amber);">20,6%</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:20.6%;background:var(--amber);"></div></div>
+          </div>
+        </div>
+
+        <!-- UPCOMING -->
+        <div class="panel">
+          <div class="ph"><span class="ph-t">Ближайшие события</span><span class="ph-a">Календарь →</span></div>
+          <div class="ev-item">
+            <div class="ev-cal hot"><span class="ev-day">05</span><span class="ev-mon">май</span></div>
+            <div class="ev-body"><div class="ev-t">Собрание кредиторов</div><div class="ev-s">Повестка: порядок реализации имущества</div><div class="ev-time">10:00 · офис УУ</div></div>
+          </div>
+          <div class="ev-item">
+            <div class="ev-cal near"><span class="ev-day">14</span><span class="ev-mon">май</span></div>
+            <div class="ev-body"><div class="ev-t">Заседание по жалобе на УУ</div><div class="ev-s">Жалоба на противоречивое поведение</div><div class="ev-time">11:00 · АС НСО · Зал 5</div></div>
+          </div>
+          <div class="ev-item">
+            <div class="ev-cal purple"><span class="ev-day">22</span><span class="ev-mon">май</span></div>
+            <div class="ev-body"><div class="ev-t">Оспаривание сделки с ООО «Актив+»</div><div class="ev-s">Обос. спор · вывод имущества</div><div class="ev-time">14:30 · АС НСО</div></div>
+          </div>
+        </div>
+
+        <!-- AI PANEL -->
+        <div class="ai-panel">
+          <div class="ai-hd">
+            <div class="ai-av"><svg width="13" height="13" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/></svg></div>
+            <div><div class="ai-ht">AI-ассистент</div><div class="ai-hs">Знает всё по делу</div></div>
+            <div class="ai-live"></div>
+          </div>
+          <div class="ai-note"><strong>Ключевой риск:</strong> покрытие реестра всего 20,6%. При текущей конкурсной массе клиент получит ~<strong>₽1 803 500</strong> из ₽8 750 000. Оспаривание сделок может увеличить массу.</div>
+          <div class="ai-chips">
+            <button class="ai-chip" onclick="aiClick('meeting')"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5"/><circle cx="9" cy="7" r="4"/></svg>Позиция на собрание 5 мая</button>
+            <button class="ai-chip" onclick="aiClick('recovery')"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>Прогноз погашения требования</button>
+            <button class="ai-chip" onclick="aiClick('complaint')"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>Черновик жалобы на УУ</button>
+            <button class="ai-chip" onclick="aiClick('transactions')"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Анализ оспариваемых сделок</button>
+          </div>
+          <div class="ai-resp" id="aiResp"><div class="ai-resp-text" id="aiRespText"></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== CREDITORS TAB =================== -->
+  <div id="tab-creditors" class="tab-content">
+    <div style="padding:16px 20px;">
+      <div class="panel">
+        <div class="ph">
+          <span class="ph-t"><svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Реестр кредиторов · 14 кредиторов · ₽423 600 000</span>
+          <span class="ph-a">+ Добавить кредитора</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="cr-table" style="min-width:700px;">
+            <thead>
+              <tr>
+                <th style="width:30px;">#</th>
+                <th>Кредитор</th>
+                <th>Основание</th>
+                <th>Сумма требования</th>
+                <th>% реестра</th>
+                <th>Очерёдность</th>
+                <th>Статус</th>
+                <th>Дата включения</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="color:var(--text3);font-size:11px;">1</td><td><div class="cr-name">ПАО «СибирьБанк»</div><div class="cr-num">залоговый кредитор · ипотека</div></td><td style="font-size:11px;color:var(--text2);">Кредитный договор</td><td><div class="cr-amt">₽180 200 000</div></td><td style="font-size:11px;color:var(--text2);">42,6%</td><td><span class="q-badge q1">1-я залоговая</span></td><td><span class="st-badge st-in">Включён</span></td><td style="font-size:11px;color:var(--text3);">25.10.2023</td></tr>
+              <tr><td style="color:var(--text3);font-size:11px;">2</td><td><div class="cr-name">ФНС России</div><div class="cr-num">ИФНС по Ленинскому р-ну</div></td><td style="font-size:11px;color:var(--text2);">Налоги, взносы</td><td><div class="cr-amt">₽42 100 000</div></td><td style="font-size:11px;color:var(--text2);">9,9%</td><td><span class="q-badge q2">2-я</span></td><td><span class="st-badge st-in">Включён</span></td><td style="font-size:11px;color:var(--text3);">01.11.2023</td></tr>
+              <tr><td style="color:var(--text3);font-size:11px;">3</td><td><div class="cr-name">ООО «ТехноПоставка»</div></td><td style="font-size:11px;color:var(--text2);">Договор поставки</td><td><div class="cr-amt">₽38 400 000</div></td><td style="font-size:11px;color:var(--text2);">9,1%</td><td><span class="q-badge q3">3-я</span></td><td><span class="st-badge st-disp">Оспаривается</span></td><td style="font-size:11px;color:var(--text3);">10.11.2023</td></tr>
+              <tr><td style="color:var(--text3);font-size:11px;">4</td><td><div class="cr-name">АО «Промышленные Системы»</div></td><td style="font-size:11px;color:var(--text2);">Подряд</td><td><div class="cr-amt">₽29 700 000</div></td><td style="font-size:11px;color:var(--text2);">7,0%</td><td><span class="q-badge q3">3-я</span></td><td><span class="st-badge st-in">Включён</span></td><td style="font-size:11px;color:var(--text3);">15.11.2023</td></tr>
+              <tr class="our-row">
+                <td style="color:var(--text3);font-size:11px;">5</td>
+                <td><div class="cr-name">АО «СибирьСтройГрупп» <span class="our-label">МЫ</span></div><div class="cr-num">дог. поставки № 211/2022</div></td>
+                <td style="font-size:11px;color:var(--text2);">Договор поставки</td>
+                <td><div class="cr-amt" style="color:var(--green);">₽8 750 000</div></td>
+                <td style="font-size:11px;color:var(--text2);">2,1%</td>
+                <td><span class="q-badge q3">3-я</span></td>
+                <td><span class="st-badge st-in">Включён</span></td>
+                <td style="font-size:11px;color:var(--text3);">15.11.2023</td>
+              </tr>
+              <tr><td style="color:var(--text3);font-size:11px;">6</td><td><div class="cr-name">ООО «МеталлГрупп»</div></td><td style="font-size:11px;color:var(--text2);">Поставка металла</td><td><div class="cr-amt">₽7 300 000</div></td><td style="font-size:11px;color:var(--text2);">1,7%</td><td><span class="q-badge q3">3-я</span></td><td><span class="st-badge st-in">Включён</span></td><td style="font-size:11px;color:var(--text3);">20.11.2023</td></tr>
+              <tr><td style="color:var(--text3);font-size:11px;">7</td><td><div class="cr-name">ИП Орлов В.Н.</div></td><td style="font-size:11px;color:var(--text2);">Аренда оборудования</td><td><div class="cr-amt">₽4 200 000</div></td><td style="font-size:11px;color:var(--text2);">1,0%</td><td><span class="q-badge q3">3-я</span></td><td><span class="st-badge st-pend">Рассматривается</span></td><td style="font-size:11px;color:var(--text3);">—</td></tr>
+              <tr><td style="color:var(--text3);font-size:11px;">8</td><td><div class="cr-name">ПФР / СФР</div></td><td style="font-size:11px;color:var(--text2);">Страховые взносы</div></td><td><div class="cr-amt">₽3 900 000</div></td><td style="font-size:11px;color:var(--text2);">0,9%</td><td><span class="q-badge q2">2-я</span></td><td><span class="st-badge st-in">Включён</span></td><td style="font-size:11px;color:var(--text3);">05.11.2023</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:12px 16px;background:var(--surface2);border-top:1px solid var(--border);display:flex;gap:20px;">
+          <div style="font-size:12px;"><span style="color:var(--text3);">Итого реестр: </span><strong>₽423 600 000</strong></div>
+          <div style="font-size:12px;"><span style="color:var(--text3);">Масса: </span><strong style="color:var(--amber);">₽87 400 000 (20,6%)</strong></div>
+          <div style="font-size:12px;"><span style="color:var(--text3);">Прогноз погашения клиенту: </span><strong style="color:var(--green);">~₽1 803 500 (20,6%)</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== PROCEEDINGS TAB =================== -->
+  <div id="tab-proceedings" class="tab-content">
+    <div style="padding:16px 20px;">
+      <div class="panel">
+        <div class="ph"><span class="ph-t">Обособленные споры · 6 производств</span><span class="ph-a">+ Добавить спор</span></div>
+        <div class="pr-list">
+          <div class="pr-item">
+            <div class="pr-type pt-ospor">ОС</div>
+            <div class="pr-body">
+              <div class="pr-title">Оспаривание сделки с ООО «Актив+» — вывод нежилого помещения</div>
+              <div class="pr-meta"><span>Ст. 61.2 ФЗ о банкротстве</span><span>·</span><span>Сумма: ₽28 700 000</span><span>·</span><span>АС НСО</span></div>
+            </div>
+            <div class="pr-status"><span class="st-badge st-pend">В производстве</span><div style="font-size:10px;color:var(--red);margin-top:3px;">22 мая · заседание</div></div>
+          </div>
+          <div class="pr-item">
+            <div class="pr-type pt-ospor">ОС</div>
+            <div class="pr-body">
+              <div class="pr-title">Оспаривание платежей ООО «ТехноПоставка» — преимущественное удовлетворение</div>
+              <div class="pr-meta"><span>Ст. 61.3 ФЗ о банкротстве</span><span>·</span><span>Сумма: ₽12 400 000</span></div>
+            </div>
+            <div class="pr-status"><span class="st-badge st-pend">В производстве</span><div style="font-size:10px;color:var(--text3);margin-top:3px;">03 июня</div></div>
+          </div>
+          <div class="pr-item">
+            <div class="pr-type pt-sub">СО</div>
+            <div class="pr-body">
+              <div class="pr-title">Привлечение к субсидиарной ответственности — Громов П.Н. (ген. директор) и Зорин А.В. (учредитель)</div>
+              <div class="pr-meta"><span>Ст. 61.11 ФЗ о банкротстве</span><span>·</span><span>Сумма: ₽423 600 000</span></div>
+            </div>
+            <div class="pr-status"><span class="st-badge" style="background:var(--purple-l);color:var(--purple);">Подготовка</span><div style="font-size:10px;color:var(--text3);margin-top:3px;">Подача до 30 июня</div></div>
+          </div>
+          <div class="pr-item">
+            <div class="pr-type pt-razn">Р</div>
+            <div class="pr-body">
+              <div class="pr-title">Разногласия с управляющим — жалоба на реализацию оборудования цеха № 3</div>
+              <div class="pr-meta"><span>Ст. 60 ФЗ о банкротстве</span><span>·</span><span>Подана АО «СибирьСтройГрупп» совместно с 3 кредиторами</span></div>
+            </div>
+            <div class="pr-status"><span class="st-badge st-pend">Рассматривается</span><div style="font-size:10px;color:var(--red);margin-top:3px;">14 мая · заседание</div></div>
+          </div>
+          <div class="pr-item">
+            <div class="pr-type pt-incl">ВР</div>
+            <div class="pr-body">
+              <div class="pr-title">Включение в реестр — ИП Орлов В.Н. · аренда оборудования</div>
+              <div class="pr-meta"><span>Ст. 71 ФЗ о банкротстве</span><span>·</span><span>₽4 200 000</span><span>·</span><span>Рассматривается судом</span></div>
+            </div>
+            <div class="pr-status"><span class="st-badge st-pend">В производстве</span></div>
+          </div>
+          <div class="pr-item">
+            <div class="pr-type pt-ospor">ОС</div>
+            <div class="pr-body">
+              <div class="pr-title">Оспаривание договора займа с аффилированным лицом — ООО «ПТС Холдинг»</div>
+              <div class="pr-meta"><span>Ст. 61.2, мнимость</span><span>·</span><span>Сумма: ₽85 000 000</span><span>·</span><span>Высокий приоритет</span></div>
+            </div>
+            <div class="pr-status"><span class="st-badge st-in">Удовлетворён</span><div style="font-size:10px;color:var(--green);margin-top:3px;">Апрель 2025 ✓</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other tabs placeholder -->
+  <div id="tab-assets" class="tab-content"><div style="padding:40px;text-align:center;color:var(--text3);">Раздел «Конкурсная масса» — в разработке</div></div>
+  <div id="tab-transactions" class="tab-content"><div style="padding:40px;text-align:center;color:var(--text3);">Раздел «Оспаривание сделок» — в разработке</div></div>
+  <div id="tab-meetings" class="tab-content"><div style="padding:40px;text-align:center;color:var(--text3);">Раздел «Собрания кредиторов» — в разработке</div></div>
+  <div id="tab-sub" class="tab-content"><div style="padding:40px;text-align:center;color:var(--text3);">Раздел «Субсидиарная ответственность» — в разработке</div></div>
+  <div id="tab-docs" class="tab-content"><div style="padding:40px;text-align:center;color:var(--text3);">Раздел «Документы» — в разработке</div></div>
+
+</div><!-- /main -->
+
+<script>
+// TIMER
+let ts=2838;
+const cl=document.getElementById('tclock');
+function fmt(s){return[Math.floor(s/3600),Math.floor((s%3600)/60),s%60].map(v=>String(v).padStart(2,'0')).join(':');}
+setInterval(()=>{ts++;cl.textContent=fmt(ts);},1000);
+
+// SIDEBAR
+document.querySelectorAll('.si').forEach(i=>i.addEventListener('click',function(){document.querySelectorAll('.si').forEach(x=>x.classList.remove('active'));this.classList.add('active');}));
+
+// ALERT CLOSE
+document.querySelector('.ch-alert-close').addEventListener('click',function(){this.closest('.ch-alert').style.display='none';});
+
+// TABS
+function switchTab(el, id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  const t=document.getElementById('tab-'+id);
+  if(t) t.classList.add('active');
+}
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',function(){
+    const id=this.getAttribute('onclick').match(/switchTab\(this,'([^']+)'\)/);
+    if(id) switchTab(this,id[1]);
+  });
+});
+
+// AI
+const aiReplies={
+  meeting:'<strong>Позиция на собрание 5 мая:</strong><br>По вопросу реализации оборудования рекомендую голосовать ПРОТИВ предложенного порядка по двум основаниям: 1) Начальная цена занижена на 35% против оценки (₽54,2 млн vs ₽83 млн по отчёту оценщика). 2) УУ предложил реализацию единым лотом — это снижает конкуренцию. Предложить альтернативу: 7 отдельных лотов + поднять начальную цену.',
+  recovery:'<strong>Прогноз погашения требования:</strong><br>При текущей массе ₽87,4 млн и реестре ₽423,6 млн — коэффициент покрытия 20,6%. Прогноз клиенту: ~₽1 803 500 из ₽8 750 000. НО: если оспаривание сделки с ООО «Актив+» успешно — масса вырастет до ₽116,1 млн → погашение вырастет до ~₽2 397 000 (+32%).',
+  complaint:'<strong>Черновик жалобы на УУ:</strong><br>В АС Новосибирской области от кредитора АО «СибирьСтройГрупп»: «Просим признать незаконными действия УУ Медведева К.А. по включению в план реализации оборудования цехов № 1–3, ранее признанного им непригодным к реализации (заключение от 12.11.2023). Указанное поведение является противоречивым и нарушает ст. 20.3 ФЗ о банкротстве.»',
+  transactions:'<strong>Анализ оспариваемых сделок:</strong><br>Наиболее перспективное: оспаривание договора займа с ООО «ПТС Холдинг» (ст. 61.2) — УЖЕ УДОВЛЕТВОРЕНО (апрель 2025), масса пополнена. Следующее по приоритету: сделка с ООО «Актив+» — нежилое помещение ₽28,7 млн, подозрительная сделка за 1 год до банкротства. Шансы высокие.'
+};
+function aiClick(k){
+  const r=document.getElementById('aiResp');
+  const t=document.getElementById('aiRespText');
+  r.classList.add('show');
+  t.innerHTML=aiReplies[k]||'Анализирую...';
+  r.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
