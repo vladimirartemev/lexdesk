@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LexDesk — Практика и доктрина</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1a2f6e;--navy2:#1e4db7;--navy3:#38a8e0;
+  --accent:#1a56db;--accent-h:#1447c0;--accent-l:#e8f0fe;--accent-m:#bfcffe;
+  --bg:#f0f4fa;--surface:#fff;--surface2:#f7f9fc;
+  --border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
+  --teal:#0891b2;--teal-l:#e0f2fe;--teal-b:#7dd3fc;
+  --green:#16a34a;--green-l:#dcfce7;--green-b:#86efac;
+  --amber:#d97706;--amber-l:#fef3c7;--amber-b:#fcd34d;
+  --red:#dc2626;--red-l:#fee2e2;--red-b:#fca5a5;
+  --purple:#7c3aed;--purple-l:#ede9fe;--purple-b:#c4b5fd;
+  --sh:0 1px 3px rgba(0,0,0,0.07),0 1px 2px rgba(0,0,0,0.04);
+  --sh-md:0 4px 12px rgba(0,0,0,0.08),0 2px 4px rgba(0,0,0,0.04);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
+
+/* SIDEBAR */
+.sidebar{width:52px;min-height:100vh;background:linear-gradient(180deg,var(--navy) 0%,#162960 100%);display:flex;flex-direction:column;align-items:center;padding:14px 0 12px;gap:2px;position:fixed;top:0;left:0;bottom:0;z-index:100;}
+.sb-logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--navy3),var(--accent));display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.si{width:44px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;transition:all 0.15s;}
+.si:hover{background:rgba(255,255,255,0.08);}
+.si.active{background:rgba(56,168,224,0.22);border:1px solid rgba(56,168,224,0.3);}
+.si svg{opacity:0.45;transition:opacity 0.15s;}
+.si:hover svg,.si.active svg{opacity:1;}
+.sdiv{width:28px;height:1px;background:rgba(255,255,255,0.1);margin:5px 0;}
+.sav{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--navy3),var(--accent));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;margin-top:auto;}
+
+/* MAIN */
+.main{margin-left:52px;flex:1;display:flex;flex-direction:column;}
+
+/* TOPBAR */
+.topbar{background:linear-gradient(90deg,var(--navy) 0%,var(--navy2) 55%,var(--navy3) 100%);height:52px;display:flex;align-items:center;padding:0 20px;gap:10px;position:sticky;top:0;z-index:50;}
+.tb-back{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.bc{font-size:12px;color:rgba(255,255,255,0.65);}
+.bc strong{color:#fff;font-weight:500;}
+.tbr{margin-left:auto;display:flex;gap:7px;}
+.hbtn{height:30px;padding:0 12px;border-radius:7px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.1);font-size:11px;font-weight:500;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:5px;transition:background 0.15s;white-space:nowrap;}
+.hbtn:hover{background:rgba(255,255,255,0.2);}
+.hbtn.solid{background:#fff;color:var(--accent);border-color:#fff;}
+.hbtn.solid:hover{background:#f0f4ff;}
+
+/* CASE HEADER */
+.case-hd{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 20px;}
+.ch-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.ci{width:36px;height:36px;border-radius:9px;background:var(--accent-l);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ct{font-family:'Sora',sans-serif;font-size:15px;font-weight:600;color:var(--text);flex:1;line-height:1.3;}
+.badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:3px;}
+.b-active{background:var(--teal-l);color:var(--teal);}
+.b-arb{background:var(--accent-l);color:var(--accent);}
+.ch-meta{display:flex;gap:0;flex-wrap:wrap;}
+.mi{padding:0 16px 0 0;margin-right:16px;border-right:1px solid var(--border);}
+.mi:last-child{border-right:none;}
+.ml{font-size:10px;color:var(--text3);margin-bottom:1px;}
+.mv{font-size:12px;color:var(--text);font-weight:500;}
+.mv.ac{color:var(--accent);}
+.mv.rd{color:var(--red);}
+
+/* TIMER */
+.timer-bar{background:linear-gradient(90deg,var(--navy),var(--navy2));padding:8px 20px;display:flex;align-items:center;gap:12px;}
+.tp{width:7px;height:7px;border-radius:50%;background:#5eead4;animation:glow 1.6s ease-in-out infinite;flex-shrink:0;}
+@keyframes glow{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(94,234,212,0.5);}50%{opacity:0.4;box-shadow:0 0 0 4px rgba(94,234,212,0);}}
+.tl{font-size:11px;color:rgba(255,255,255,0.7);flex:1;}
+.tl strong{color:#fff;}
+.tc{font-family:'Sora',sans-serif;font-size:18px;font-weight:600;color:#5eead4;letter-spacing:1px;}
+.tbtn{height:25px;padding:0 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.08);font-size:10px;font-weight:500;color:rgba(255,255,255,0.75);cursor:pointer;font-family:'Inter',sans-serif;margin-left:5px;}
+.tbtn.stop{background:rgba(220,38,38,0.2);border-color:rgba(220,38,38,0.35);color:#fca5a5;}
+
+/* TABS */
+.tabs-row{background:var(--surface);border-bottom:1px solid var(--border);display:flex;padding:0 20px;overflow-x:auto;}
+.tab{height:42px;padding:0 14px;font-size:12px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:6px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color 0.15s;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500;}
+.tab-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);animation:glow2 1.5s ease-in-out infinite;}
+@keyframes glow2{0%,100%{opacity:1;}50%{opacity:0.2;}}
+
+/* CONTENT */
+.content{flex:1;padding:18px 20px;display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start;}
+
+/* PANELS */
+.panel{background:var(--surface);border-radius:12px;border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;margin-bottom:14px;}
+.panel:last-child{margin-bottom:0;}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border);}
+.ph-t{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px;}
+.ph-a{font-size:11px;font-weight:500;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:4px;}
+.ph-count{font-size:11px;font-weight:600;background:var(--accent-l);color:var(--accent);padding:1px 7px;border-radius:10px;}
+
+/* ADD CONTROLS */
+.add-bar{padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.add-label{font-size:11px;color:var(--text3);font-weight:500;white-space:nowrap;}
+.add-input{flex:1;min-width:180px;height:32px;border:1px solid var(--border);border-radius:7px;padding:0 10px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface);outline:none;transition:border-color 0.15s;}
+.add-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,86,219,0.07);}
+.add-btn{height:32px;padding:0 12px;border-radius:7px;border:1px solid var(--border);background:var(--surface);font-size:11px;font-weight:500;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:5px;white-space:nowrap;transition:all 0.15s;}
+.add-btn:hover{border-color:var(--accent-m);background:var(--accent-l);color:var(--accent);}
+.add-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.add-btn.primary:hover{background:var(--accent-h);}
+.add-btn.ai{background:linear-gradient(135deg,var(--navy2),var(--accent));border-color:transparent;color:#fff;}
+.add-btn.ai:hover{opacity:0.88;}
+.upload-zone{width:100%;border:1.5px dashed var(--border2);border-radius:8px;padding:10px;text-align:center;font-size:11px;color:var(--text3);cursor:pointer;transition:all 0.15s;display:none;}
+.upload-zone.show{display:block;}
+.upload-zone:hover{border-color:var(--accent-m);background:var(--accent-l);color:var(--accent);}
+
+/* PRACTICE ITEMS */
+.pitem{padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s;}
+.pitem:last-child{border-bottom:none;}
+.pitem:hover{background:#fafbff;}
+.pi-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px;}
+.pi-type{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+.pt-court{background:var(--accent-l);color:var(--accent);}
+.pt-vs{background:#ede9fe;color:#7c3aed;}
+.pt-art{background:var(--teal-l);color:var(--teal);}
+.pt-plen{background:var(--amber-l);color:var(--amber);}
+.pi-body{flex:1;}
+.pi-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:3px;}
+.pitem:hover .pi-title{color:var(--accent);}
+.pi-meta{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.pi-source{font-weight:500;color:var(--text2);}
+.pi-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;}
+.pi-tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;display:flex;align-items:center;gap:3px;}
+.tag-neu{background:var(--accent-l);color:var(--accent);}
+.tag-key{background:var(--green-l);color:var(--green);}
+.tag-warn{background:var(--amber-l);color:var(--amber);}
+.tag-ref{background:var(--purple-l);color:var(--purple);}
+.pi-excerpt{font-size:11px;color:var(--text2);line-height:1.55;margin-top:6px;padding:7px 10px;background:var(--surface2);border-radius:6px;border-left:2px solid var(--accent-m);}
+.pi-actions{display:flex;gap:6px;margin-top:8px;}
+.pia{height:24px;padding:0 9px;border-radius:5px;border:1px solid var(--border);background:transparent;font-size:10px;font-weight:500;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
+.pia:hover{border-color:var(--accent-m);color:var(--accent);background:var(--accent-l);}
+.pia.red:hover{border-color:var(--red-b);color:var(--red);background:var(--red-l);}
+.pi-score{display:flex;align-items:center;gap:3px;margin-left:auto;}
+.star{color:#fbbf24;font-size:12px;}
+.star.off{color:var(--border2);}
+
+/* AI SUGGESTION PANEL */
+.ai-panel{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
+.aip-h{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.aip-av{width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;}
+.aip-title{font-size:12px;font-weight:600;color:#fff;}
+.aip-sub{font-size:10px;color:rgba(255,255,255,0.5);}
+.aip-live{width:6px;height:6px;border-radius:50%;background:#5eead4;margin-left:auto;animation:glow 1.5s ease-in-out infinite;}
+.aip-text{font-size:12px;color:rgba(255,255,255,0.82);line-height:1.6;margin-bottom:10px;}
+.aip-text strong{color:#fff;}
+.aip-items{display:flex;flex-direction:column;gap:6px;}
+.aip-item{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:9px 11px;display:flex;align-items:flex-start;gap:8px;cursor:pointer;transition:background 0.15s;}
+.aip-item:hover{background:rgba(255,255,255,0.15);}
+.aip-item-icon{width:24px;height:24px;border-radius:5px;background:rgba(56,168,224,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.aip-item-body{flex:1;}
+.aip-item-title{font-size:11px;font-weight:500;color:#fff;line-height:1.4;}
+.aip-item-sub{font-size:10px;color:rgba(255,255,255,0.5);margin-top:1px;}
+.aip-add{width:24px;height:24px;border-radius:5px;background:rgba(255,255,255,0.12);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;font-size:16px;line-height:1;}
+.aip-add:hover{background:rgba(56,168,224,0.4);}
+
+/* MIND MAP */
+.mindmap-panel{background:var(--surface);border-radius:12px;border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;position:sticky;top:72px;}
+.mm-header{padding:11px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.mm-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;}
+.mm-controls{display:flex;gap:5px;}
+.mm-btn{height:26px;padding:0 9px;border-radius:6px;border:1px solid var(--border);background:transparent;font-size:10px;font-weight:500;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
+.mm-btn:hover{background:var(--accent-l);border-color:var(--accent-m);color:var(--accent);}
+.mm-btn.active-mm{background:var(--accent);border-color:var(--accent);color:#fff;}
+#mmCanvas{width:100%;height:420px;cursor:grab;display:block;background:var(--surface2);}
+#mmCanvas:active{cursor:grabbing;}
+.mm-hint{font-size:10px;color:var(--text3);padding:6px 14px;border-top:1px solid var(--border);text-align:center;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px;}
+::-webkit-scrollbar-thumb:hover{background:#94a3b8;}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sb-logo">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M12 3L4 7v5c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V7L12 3z"/></svg>
+  </div>
+  <div class="si" title="Дашборд">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+  </div>
+  <div class="si active" title="Дела">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M20 7H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1z"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+  </div>
+  <div class="si" title="Клиенты">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+  </div>
+  <div class="si" title="Календарь">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+  </div>
+  <div class="sdiv"></div>
+  <div class="si" title="Тайм-трекер">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+  </div>
+  <div class="si" title="Биллинг">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+  </div>
+  <div class="sdiv"></div>
+  <div class="si" title="База знаний">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+  </div>
+  <div class="si" title="AI-ассистент">
+    <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  </div>
+  <div class="sav">АС</div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <button class="tb-back">
+      <svg width="13" height="13" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span class="bc">Дела / <strong>А45-28371/2024</strong> / Практика и доктрина</span>
+    <div class="tbr">
+      <button class="hbtn" onclick="toggleUpload()">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Загрузить PDF
+      </button>
+      <button class="hbtn" onclick="showLinkInput()">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Вставить ссылку
+      </button>
+      <button class="hbtn solid" onclick="aiSearch()">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        AI: найти практику
+      </button>
+    </div>
+  </div>
+
+  <!-- CASE HEADER -->
+  <div class="case-hd">
+    <div class="ch-top">
+      <div class="ci">
+        <svg width="18" height="18" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M20 7H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1z"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      </div>
+      <div class="ct" style="flex:1;">АО «СибирьСтройГрупп» против ООО «МеталлоКонструкция» — взыскание долга по договору поставки</div>
+      <span class="badge b-active">Активное</span>
+      <span class="badge b-arb">Арбитраж</span>
+    </div>
+    <div class="ch-meta">
+      <div class="mi"><div class="ml">Номер дела</div><div class="mv">А45-28371/2024</div></div>
+      <div class="mi"><div class="ml">Клиент</div><div class="mv ac">АО «СибирьСтройГрупп»</div></div>
+      <div class="mi"><div class="ml">Суд</div><div class="mv">АС Новосибирской обл.</div></div>
+      <div class="mi"><div class="ml">Судья</div><div class="mv">Кравцова Е.В.</div></div>
+      <div class="mi"><div class="ml">Следующее заседание</div><div class="mv rd">14 мая · 11:00</div></div>
+      <div class="mi"><div class="ml">Сумма иска</div><div class="mv">₽18 500 000</div></div>
+      <div class="mi"><div class="ml">Актов в базе</div><div class="mv ac">7 актов · 3 статьи</div></div>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer-bar">
+    <div class="tp"></div>
+    <span class="tl"><strong>Таймер активен</strong> — Анализ судебной практики по ст. 333 ГК РФ</span>
+    <span class="tc" id="tclock">00:23:41</span>
+    <button class="tbtn">Пауза</button>
+    <button class="tbtn stop">Завершить</button>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-row">
+    <div class="tab" onclick="setTab(this)">Обзор</div>
+    <div class="tab" onclick="setTab(this)">Документы</div>
+    <div class="tab" onclick="setTab(this)">Время и биллинг</div>
+    <div class="tab" onclick="setTab(this)">Чат с клиентом &nbsp;<div class="tab-dot"></div></div>
+    <div class="tab active" onclick="setTab(this)">Практика и доктрина</div>
+    <div class="tab" onclick="setTab(this)">Майнд-карта</div>
+    <div class="tab" onclick="setTab(this)">Задачи</div>
+    <div class="tab" onclick="setTab(this)">AI-ассистент</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- LEFT: Practice list -->
+    <div>
+
+      <!-- ADD CONTROLS -->
+      <div class="panel" id="addPanel">
+        <div class="add-bar">
+          <span class="add-label">Добавить:</span>
+          <input class="add-input" id="linkInput" placeholder="Вставить ссылку (kad.arbitr.ru, consultant.ru, garant.ru...)" style="display:none;" />
+          <button class="add-btn" onclick="toggleUpload()">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Загрузить PDF
+          </button>
+          <button class="add-btn" onclick="showLinkInput()">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            Вставить ссылку
+          </button>
+          <button class="add-btn ai" onclick="aiSearch()">
+            <svg width="11" height="11" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            AI: найти по тексту дела
+          </button>
+        </div>
+        <div class="upload-zone" id="uploadZone" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 6px;display:block;opacity:0.4;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Перетащите PDF-файлы сюда или <span style="color:var(--accent);font-weight:500;">выберите файлы</span>
+        </div>
+      </div>
+
+      <!-- AI SUGGESTIONS -->
+      <div class="ai-panel" id="aiSuggestPanel" style="display:none;">
+        <div class="aip-h">
+          <div class="aip-av">
+            <svg width="13" height="13" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div>
+            <div class="aip-title">AI нашёл релевантную практику</div>
+            <div class="aip-sub">по тексту дела и доводам отзыва</div>
+          </div>
+          <div class="aip-live"></div>
+        </div>
+        <div class="aip-text">Проанализировал карточку дела и черновик отзыва. Найдено <strong>4 релевантных акта</strong> по ключевым доводам: снижение неустойки (ст. 333 ГК), качество поставки, акт сверки как доказательство.</div>
+        <div class="aip-items">
+          <div class="aip-item" onclick="addFromAI(this,'Постановление Пленума ВС РФ № 7 от 24.03.2016','О применении судами ст. 333 ГК РФ')">
+            <div class="aip-item-icon"><svg width="12" height="12" fill="none" stroke="#38a8e0" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>
+            <div class="aip-item-body">
+              <div class="aip-item-title">Постановление Пленума ВС РФ № 7 от 24.03.2016</div>
+              <div class="aip-item-sub">Ключевой акт → снижение неустойки по ст. 333 ГК РФ</div>
+            </div>
+            <button class="aip-add">+</button>
+          </div>
+          <div class="aip-item" onclick="addFromAI(this,'Определение ВС РФ № 305-ЭС22-14900','Акт сверки как доказательство задолженности')">
+            <div class="aip-item-icon"><svg width="12" height="12" fill="none" stroke="#38a8e0" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>
+            <div class="aip-item-body">
+              <div class="aip-item-title">Определение ВС РФ № 305-ЭС22-14900</div>
+              <div class="aip-item-sub">Акт сверки как доказательство задолженности</div>
+            </div>
+            <button class="aip-add">+</button>
+          </div>
+          <div class="aip-item" onclick="addFromAI(this,'Постановление АС ЗСО № А45-19834/2022','Снижение неустойки в договоре поставки, регион')">
+            <div class="aip-item-icon"><svg width="12" height="12" fill="none" stroke="#38a8e0" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>
+            <div class="aip-item-body">
+              <div class="aip-item-title">Постановление АС ЗСО по делу А45-19834/2022</div>
+              <div class="aip-item-sub">Снижение неустойки в договоре поставки — регион</div>
+            </div>
+            <button class="aip-add">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- COURT DECISIONS -->
+      <div class="panel">
+        <div class="ph">
+          <span class="ph-t">
+            <svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Судебные акты
+            <span class="ph-count">7</span>
+          </span>
+          <span class="ph-a">+ Добавить акт</span>
+        </div>
+
+        <div class="pitem">
+          <div class="pi-top">
+            <div class="pi-type pt-plen">ПП ВС</div>
+            <div class="pi-body">
+              <div class="pi-title">Постановление Пленума ВС РФ № 7 от 24.03.2016 «О применении судами некоторых положений ГК РФ об ответственности за нарушение обязательств»</div>
+              <div class="pi-meta">
+                <span class="pi-source">Пленум Верховного Суда РФ</span>
+                <span>24 марта 2016</span>
+                <span>КонсультантПлюс</span>
+              </div>
+              <div class="pi-tags">
+                <span class="pi-tag tag-key">⭐ Ключевой</span>
+                <span class="pi-tag tag-neu">Ст. 333 ГК РФ</span>
+                <span class="pi-tag tag-neu">Снижение неустойки</span>
+                <span class="pi-tag tag-ref">Отзыв → раздел 4</span>
+              </div>
+              <div class="pi-excerpt">П. 73: бремя доказывания несоразмерности неустойки лежит на ответчике. П. 77: снижение неустойки ниже однократной ставки ЦБ допускается лишь в исключительных случаях.</div>
+            </div>
+            <div class="pi-score">
+              <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+            </div>
+          </div>
+          <div class="pi-actions">
+            <button class="pia">Открыть</button>
+            <button class="pia">Процитировать</button>
+            <button class="pia">Привязать к доводу</button>
+            <button class="pia red">Удалить</button>
+          </div>
+        </div>
+
+        <div class="pitem">
+          <div class="pi-top">
+            <div class="pi-type pt-vs">ВС РФ</div>
+            <div class="pi-body">
+              <div class="pi-title">Определение ВС РФ № 305-ЭС22-14900 от 18.10.2022 по делу А40-188722/2021</div>
+              <div class="pi-meta">
+                <span class="pi-source">Верховный Суд РФ</span>
+                <span>18 октября 2022</span>
+                <span>kad.arbitr.ru</span>
+              </div>
+              <div class="pi-tags">
+                <span class="pi-tag tag-key">⭐ Ключевой</span>
+                <span class="pi-tag tag-neu">Акт сверки</span>
+                <span class="pi-tag tag-neu">Доказательство долга</span>
+              </div>
+              <div class="pi-excerpt">Акт сверки взаимных расчётов, подписанный уполномоченными лицами без разногласий, является достаточным доказательством размера задолженности в отсутствие иных первичных документов.</div>
+            </div>
+            <div class="pi-score">
+              <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star off">★</span>
+            </div>
+          </div>
+          <div class="pi-actions">
+            <button class="pia">Открыть</button>
+            <button class="pia">Процитировать</button>
+            <button class="pia">Привязать к доводу</button>
+            <button class="pia red">Удалить</button>
+          </div>
+        </div>
+
+        <div class="pitem">
+          <div class="pi-top">
+            <div class="pi-type pt-court">АС ЗСО</div>
+            <div class="pi-body">
+              <div class="pi-title">Постановление АС Западно-Сибирского округа по делу А45-19834/2022 от 15.03.2023</div>
+              <div class="pi-meta">
+                <span class="pi-source">АС Западно-Сибирского округа</span>
+                <span>15 марта 2023</span>
+                <span>kad.arbitr.ru</span>
+              </div>
+              <div class="pi-tags">
+                <span class="pi-tag tag-warn">Регион</span>
+                <span class="pi-tag tag-neu">Договор поставки</span>
+                <span class="pi-tag tag-neu">Неустойка 0,1%/день</span>
+              </div>
+              <div class="pi-excerpt">Суд снизил неустойку с 0,5% до 0,1% в день по договору поставки металлопродукции. Ставка 0,5% признана явно несоразмерной последствиям нарушения.</div>
+            </div>
+            <div class="pi-score">
+              <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star off">★</span>
+            </div>
+          </div>
+          <div class="pi-actions">
+            <button class="pia">Открыть</button>
+            <button class="pia">Процитировать</button>
+            <button class="pia">Привязать к доводу</button>
+            <button class="pia red">Удалить</button>
+          </div>
+        </div>
+
+        <div class="pitem" id="newItem" style="display:none;background:#f0fdf4;border-left:3px solid var(--green);">
+          <div class="pi-top">
+            <div class="pi-type pt-vs">ВС РФ</div>
+            <div class="pi-body">
+              <div class="pi-title" id="newTitle">Определение ВС РФ (добавлено из AI)</div>
+              <div class="pi-meta"><span class="pi-source" id="newSub">—</span></div>
+              <div class="pi-tags"><span class="pi-tag tag-key">Только что добавлен</span></div>
+            </div>
+          </div>
+          <div class="pi-actions">
+            <button class="pia">Открыть</button>
+            <button class="pia red">Удалить</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARTICLES -->
+      <div class="panel">
+        <div class="ph">
+          <span class="ph-t">
+            <svg width="14" height="14" fill="none" stroke="var(--teal)" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Научные статьи и доктрина
+            <span class="ph-count" style="background:var(--teal-l);color:var(--teal);">3</span>
+          </span>
+          <span class="ph-a">+ Добавить статью</span>
+        </div>
+
+        <div class="pitem">
+          <div class="pi-top">
+            <div class="pi-type pt-art">СТ</div>
+            <div class="pi-body">
+              <div class="pi-title">Карапетов А.Г. «Снижение договорной неустойки в российском и зарубежном праве» // Вестник ВАС РФ. 2020. № 6.</div>
+              <div class="pi-meta">
+                <span class="pi-source">Вестник ВАС РФ</span>
+                <span>2020, № 6</span>
+                <span>КонсультантПлюс</span>
+              </div>
+              <div class="pi-tags">
+                <span class="pi-tag tag-key">⭐ Ключевая</span>
+                <span class="pi-tag tag-neu">Доктрина</span>
+                <span class="pi-tag tag-neu">Ст. 333 ГК РФ</span>
+                <span class="pi-tag tag-ref">Отзыв → раздел 4</span>
+              </div>
+              <div class="pi-excerpt">Автор обосновывает, что суды должны активно применять ст. 333 ГК к штрафным неустойкам свыше 100% годовых, ссылаясь на компаративный анализ немецкого и французского права.</div>
+            </div>
+            <div class="pi-score">
+              <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star off">★</span>
+            </div>
+          </div>
+          <div class="pi-actions">
+            <button class="pia">Открыть</button>
+            <button class="pia">Процитировать</button>
+            <button class="pia">В базу знаний</button>
+            <button class="pia red">Удалить</button>
+          </div>
+        </div>
+
+        <div class="pitem">
+          <div class="pi-top">
+            <div class="pi-type pt-art">СТ</div>
+            <div class="pi-body">
+              <div class="pi-title">Витрянский В.В. «Договор поставки: практика применения» // Хозяйство и право. 2021. № 3.</div>
+              <div class="pi-meta">
+                <span class="pi-source">Хозяйство и право</span>
+                <span>2021, № 3</span>
+                <span>Гарант</span>
+              </div>
+              <div class="pi-tags">
+                <span class="pi-tag tag-warn">Полезная</span>
+                <span class="pi-tag tag-neu">Договор поставки</span>
+                <span class="pi-tag tag-neu">Ст. 506–524 ГК РФ</span>
+              </div>
+              <div class="pi-excerpt">Автор анализирует случаи, когда акт сверки устраняет необходимость представления первичной документации — применимо к нашей позиции по октябрьскому акту.</div>
+            </div>
+            <div class="pi-score">
+              <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star off">★</span><span class="star off">★</span>
+            </div>
+          </div>
+          <div class="pi-actions">
+            <button class="pia">Открыть</button>
+            <button class="pia">Процитировать</button>
+            <button class="pia">В базу знаний</button>
+            <button class="pia red">Удалить</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /left -->
+
+    <!-- RIGHT: Mind Map -->
+    <div>
+      <div class="mindmap-panel">
+        <div class="mm-header">
+          <span class="mm-title">
+            <svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="5.6" y1="5.6" x2="8.5" y2="8.5"/><line x1="15.5" y1="15.5" x2="18.4" y2="18.4"/><line x1="18.4" y1="5.6" x2="15.5" y2="8.5"/><line x1="8.5" y1="15.5" x2="5.6" y2="18.4"/></svg>
+            Майнд-карта позиции
+          </span>
+          <div class="mm-controls">
+            <button class="mm-btn" onclick="mmZoom(1.15)">+</button>
+            <button class="mm-btn" onclick="mmZoom(0.87)">−</button>
+            <button class="mm-btn" onclick="mmReset()">Сброс</button>
+            <button class="mm-btn active-mm" onclick="mmAddNode()">+ Узел</button>
+          </div>
+        </div>
+        <canvas id="mmCanvas"></canvas>
+        <div class="mm-hint">Перетаскивайте узлы · Двойной клик — переименовать · Кнопка «+ Узел» — добавить</div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+</div><!-- /main -->
+
+<script>
+// TIMER
+let ts = 1421;
+const cl = document.getElementById('tclock');
+function fmt(s){return[Math.floor(s/3600),Math.floor((s%3600)/60),s%60].map(v=>String(v).padStart(2,'0')).join(':');}
+setInterval(()=>{ts++;cl.textContent=fmt(ts);},1000);
+
+// TABS
+function setTab(el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
+
+// SIDEBAR
+document.querySelectorAll('.si').forEach(i=>i.addEventListener('click',function(){document.querySelectorAll('.si').forEach(x=>x.classList.remove('active'));this.classList.add('active');}));
+
+// UPLOAD TOGGLE
+function toggleUpload(){
+  const z=document.getElementById('uploadZone');
+  z.classList.toggle('show');
+}
+
+// LINK INPUT
+function showLinkInput(){
+  const inp=document.getElementById('linkInput');
+  inp.style.display=inp.style.display==='none'?'flex':'none';
+  if(inp.style.display!=='none')inp.focus();
+}
+
+// AI SEARCH
+function aiSearch(){
+  const panel=document.getElementById('aiSuggestPanel');
+  panel.style.display=panel.style.display==='none'?'block':'none';
+}
+
+// ADD FROM AI
+function addFromAI(el,title,sub){
+  document.getElementById('newTitle').textContent=title;
+  document.getElementById('newSub').textContent=sub;
+  document.getElementById('newItem').style.display='block';
+  el.style.opacity='0.4';
+  el.style.pointerEvents='none';
+  el.querySelector('.aip-add').textContent='✓';
+  document.getElementById('newItem').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// FILE DROP
+function handleDrop(e){
+  e.preventDefault();
+  const files=e.dataTransfer.files;
+  if(files.length){alert('Загружено файлов: '+files.length+'\n'+Array.from(files).map(f=>f.name).join('\n'));}
+}
+
+// =====================
+// MIND MAP
+// =====================
+const canvas=document.getElementById('mmCanvas');
+const ctx=canvas.getContext('2d');
+
+// DPI scaling
+function resizeCanvas(){
+  const rect=canvas.parentElement.getBoundingClientRect();
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=rect.width*dpr;
+  canvas.height=420*dpr;
+  canvas.style.width=rect.width+'px';
+  canvas.style.height='420px';
+  ctx.scale(dpr,dpr);
+  draw();
+}
+
+let W=380,H=420;
+
+// Nodes
+let nodes=[
+  {id:0,x:190,y:210,text:'А45-28371/2024',sub:'СибирьСтройГрупп',color:'#1e4db7',textColor:'#fff',r:42,parent:null,fixed:true},
+  {id:1,x:190,y:85, text:'Позиция',sub:'защиты',color:'#1a56db',textColor:'#fff',r:32,parent:0},
+  {id:2,x:330,y:130,text:'Ст. 333',sub:'ГК РФ',color:'#0891b2',textColor:'#fff',r:28,parent:1},
+  {id:3,x:340,y:210,text:'Акт сверки',sub:'окт. 2023',color:'#0891b2',textColor:'#fff',r:28,parent:0},
+  {id:4,x:310,y:310,text:'Доказат-ва',sub:'',color:'#16a34a',textColor:'#fff',r:30,parent:0},
+  {id:5,x:190,y:345,text:'Практика',sub:'7 актов',color:'#7c3aed',textColor:'#fff',r:32,parent:0},
+  {id:6,x:60, y:310,text:'Нормы',sub:'ГК РФ',color:'#d97706',textColor:'#fff',r:28,parent:0},
+  {id:7,x:50, y:210,text:'ВС РФ',sub:'Пленум №7',color:'#7c3aed',textColor:'#fff',r:26,parent:5},
+  {id:8,x:55, y:120,text:'АС ЗСО',sub:'А45-19834',color:'#7c3aed',textColor:'#fff',r:26,parent:5},
+  {id:9,x:330,y:365,text:'Накладные',sub:'июн–авг 23',color:'#16a34a',textColor:'#fff',r:26,parent:4},
+];
+
+let scale=1,offsetX=0,offsetY=0;
+let dragging=null,dragOffX=0,dragOffY=0;
+let isPanning=false,panStartX=0,panStartY=0,panOffX=0,panOffY=0;
+
+function toCanvas(x,y){return{x:x*scale+offsetX,y:y*scale+offsetY};}
+function toWorld(x,y){return{x:(x-offsetX)/scale,y:(y-offsetY)/scale};}
+
+function drawNode(n){
+  const p=toCanvas(n.x,n.y);
+  const r=n.r*scale;
+  ctx.save();
+  // Shadow
+  ctx.shadowColor='rgba(0,0,0,0.12)';
+  ctx.shadowBlur=8*scale;
+  ctx.shadowOffsetY=3*scale;
+  // Circle
+  ctx.beginPath();
+  ctx.arc(p.x,p.y,r,0,Math.PI*2);
+  ctx.fillStyle=n.color;
+  ctx.fill();
+  ctx.shadowColor='transparent';
+  // Border
+  ctx.strokeStyle='rgba(255,255,255,0.3)';
+  ctx.lineWidth=1.5;
+  ctx.stroke();
+  ctx.restore();
+  // Text
+  ctx.save();
+  ctx.fillStyle=n.textColor;
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  const fs=Math.max(9,Math.min(13,(r*0.32)));
+  ctx.font=`600 ${fs}px Sora,Inter,sans-serif`;
+  ctx.fillText(n.text,p.x,n.sub?p.y-fs*0.6:p.y);
+  if(n.sub){
+    ctx.font=`400 ${Math.max(8,fs*0.8)}px Inter,sans-serif`;
+    ctx.fillStyle='rgba(255,255,255,0.75)';
+    ctx.fillText(n.sub,p.x,p.y+fs*0.7);
+  }
+  ctx.restore();
+}
+
+function drawEdge(a,b){
+  const pa=toCanvas(a.x,a.y);
+  const pb=toCanvas(b.x,b.y);
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(pa.x,pa.y);
+  // Curved line
+  const cx=(pa.x+pb.x)/2,cy=(pa.y+pb.y)/2;
+  ctx.quadraticCurveTo(cx,cy,pb.x,pb.y);
+  ctx.strokeStyle='rgba(100,130,200,0.35)';
+  ctx.lineWidth=Math.max(1,1.5*scale);
+  ctx.setLineDash([]);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function draw(){
+  const dpr=window.devicePixelRatio||1;
+  const cw=canvas.width/dpr,ch=canvas.height/dpr;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // BG
+  ctx.fillStyle='#f7f9fc';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  // Grid dots
+  ctx.fillStyle='rgba(100,130,200,0.08)';
+  for(let x=0;x<cw;x+=24){for(let y=0;y<ch;y+=24){ctx.beginPath();ctx.arc(x+offsetX%24,y+offsetY%24,1,0,Math.PI*2);ctx.fill();}}
+  // Edges
+  nodes.forEach(n=>{if(n.parent!==null){const p=nodes.find(x=>x.id===n.parent);if(p)drawEdge(p,n);}});
+  // Nodes
+  nodes.forEach(n=>drawNode(n));
+}
+
+function getNodeAt(x,y){
+  const w=toWorld(x,y);
+  for(let i=nodes.length-1;i>=0;i--){
+    const n=nodes[i];
+    const dx=w.x-n.x,dy=w.y-n.y;
+    if(Math.sqrt(dx*dx+dy*dy)<n.r)return n;
+  }
+  return null;
+}
+
+canvas.addEventListener('mousedown',e=>{
+  const rect=canvas.getBoundingClientRect();
+  const x=e.clientX-rect.left,y=e.clientY-rect.top;
+  const n=getNodeAt(x,y);
+  if(n&&!n.fixed){dragging=n;const w=toWorld(x,y);dragOffX=w.x-n.x;dragOffY=w.y-n.y;}
+  else{isPanning=true;panStartX=x-offsetX;panStartY=y-offsetY;}
+});
+
+canvas.addEventListener('mousemove',e=>{
+  const rect=canvas.getBoundingClientRect();
+  const x=e.clientX-rect.left,y=e.clientY-rect.top;
+  if(dragging){const w=toWorld(x,y);dragging.x=w.x-dragOffX;dragging.y=w.y-dragOffY;draw();}
+  else if(isPanning){offsetX=x-panStartX;offsetY=y-panStartY;draw();}
+  canvas.style.cursor=getNodeAt(x,y)?'pointer':isPanning?'grabbing':'grab';
+});
+
+canvas.addEventListener('mouseup',()=>{dragging=null;isPanning=false;});
+canvas.addEventListener('mouseleave',()=>{dragging=null;isPanning=false;});
+
+canvas.addEventListener('dblclick',e=>{
+  const rect=canvas.getBoundingClientRect();
+  const n=getNodeAt(e.clientX-rect.left,e.clientY-rect.top);
+  if(n){const t=prompt('Переименовать узел:',n.text);if(t)n.text=t;draw();}
+});
+
+canvas.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const rect=canvas.getBoundingClientRect();
+  const mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  const delta=e.deltaY>0?0.9:1.1;
+  offsetX=mx-(mx-offsetX)*delta;
+  offsetY=my-(my-offsetY)*delta;
+  scale*=delta;
+  draw();
+},{passive:false});
+
+// Touch support
+let lastTouch=null;
+canvas.addEventListener('touchstart',e=>{
+  const t=e.touches[0];
+  const rect=canvas.getBoundingClientRect();
+  const x=t.clientX-rect.left,y=t.clientY-rect.top;
+  const n=getNodeAt(x,y);
+  if(n&&!n.fixed){dragging=n;const w=toWorld(x,y);dragOffX=w.x-n.x;dragOffY=w.y-n.y;}
+  else{isPanning=true;panStartX=x-offsetX;panStartY=y-offsetY;}
+},{passive:true});
+
+canvas.addEventListener('touchmove',e=>{
+  const t=e.touches[0];
+  const rect=canvas.getBoundingClientRect();
+  const x=t.clientX-rect.left,y=t.clientY-rect.top;
+  if(dragging){const w=toWorld(x,y);dragging.x=w.x-dragOffX;dragging.y=w.y-dragOffY;draw();}
+  else if(isPanning){offsetX=x-panStartX;offsetY=y-panStartY;draw();}
+},{passive:true});
+
+canvas.addEventListener('touchend',()=>{dragging=null;isPanning=false;});
+
+function mmZoom(factor){
+  const cx=W/2,cy=H/2;
+  offsetX=cx-(cx-offsetX)*factor;
+  offsetY=cy-(cy-offsetY)*factor;
+  scale*=factor;
+  draw();
+}
+
+function mmReset(){scale=1;offsetX=0;offsetY=0;draw();}
+
+let nodeCounter=nodes.length;
+function mmAddNode(){
+  const label=prompt('Название нового узла:','Новый довод');
+  if(!label)return;
+  const colors=['#1a56db','#0891b2','#16a34a','#7c3aed','#d97706','#dc2626'];
+  nodes.push({
+    id:nodeCounter++,
+    x:100+Math.random()*200,
+    y:100+Math.random()*200,
+    text:label,sub:'',
+    color:colors[Math.floor(Math.random()*colors.length)],
+    textColor:'#fff',
+    r:28,
+    parent:0
+  });
+  draw();
+}
+
+// Init
+window.addEventListener('resize',resizeCanvas);
+resizeCanvas();
+</script>
+</body>
+</html>
